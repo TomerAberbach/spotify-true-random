@@ -16,6 +16,7 @@ body {
 
 main {
     text-align: center;
+    padding: 10px;
     margin: auto;
 }
 
@@ -24,7 +25,7 @@ h1 {
 }
 
 img {
-    min-width: 70px;
+    min-width: 200px;
     width: 20vw;
     margin: 20px 0;
 }
