@@ -38,14 +38,20 @@
             <h1>True Random For</h1>
             <img src="img/spotify.png" alt="Spotify"/>
             <p>An application for unbiased truly random playlist and library shuffling with Spotify.</p>
-
             <button onclick="spotifyRandom.library(spotifyRandom.play);">Play Library</button>
+
             <span>
                 <button onclick="spotifyRandom.tracks(document.getElementById('playlists-select').value, spotifyRandom.play);">Play</button>
                 <select id="playlists-select" title="playlists"></select>
             </span>
+
+            <p>Spotify must be open and active (recently playing).</p>
+
+            <a href="http://tomeraberbach.com">
+                <div>Tomer Aberbach</div>
+            </a>
         </main>
 
-        <script type="text/javascript" src="js/script.js"></script>
+        <!--<script type="text/javascript" src="js/script.js"></script>-->
     </body>
 </html>

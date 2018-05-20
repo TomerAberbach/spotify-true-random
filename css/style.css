@@ -41,7 +41,7 @@ button {
     background-color: white;
     padding: 8px;
     border: 1px solid black;
-    margin-top: 20px;
+    margin: 20px 0;
 }
 
 button:hover {
@@ -49,7 +49,7 @@ button:hover {
 }
 
 span {
-    margin: 20px 0 0 10px;
+    margin: 20px 0 20px 10px;
 }
 
 select {
@@ -60,4 +60,21 @@ select {
     height: 100%;
     padding: 7px 35px 7px 7px;
     border: 1px solid black;
+}
+
+div {
+    display: inline-block;
+}
+
+a, a:visited, a:link {
+    display: inline-block;
+    font-size: 14pt;
+    color: black;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: transform ease-in-out 0.3s;
+}
+
+a:hover {
+    transform: scale(1.15);
 }
