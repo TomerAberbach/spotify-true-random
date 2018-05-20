@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+
+        <title>True Random For Spotify</title>
+
+        <meta name="author" content="Tomer Aberbach"/>
+        <meta name="creator" content="Tomer Aberbach"/>
+        <meta name="description" content="An application for unbiased truly random playlist and library shuffling with Spotify."/>
+        <meta name="keywords" content="spotify,true,random,shuffle,music"/>
+
+        <meta itemprop="name" content="True Random For Spotify"/>
+        <meta itemprop="description" content="An application for unbiased truly random playlist and library shuffling with Spotify."/>
+        <meta itemprop="image" content="http://tomeraberbach.com/spotify-true-random/img/icon.png"/>
+
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta name="twitter:site" content="@TomerADev"/>
+        <meta name="twitter:title" content="True Random For Spotify"/>
+        <meta name="twitter:description" content="An application for unbiased truly random playlist and library shuffling with Spotify."/>
+        <meta name="twitter:creator" content="@TomerADev"/>
+        <meta name="twitter:image" content="http://tomeraberbach.com/spotify-true-random/img/icon.png"/>
+        <meta name="twitter:image:src" content="http://tomeraberbach.com/spotify-true-random/img/icon.png"/>
+
+        <meta property="og:title" content="True Random For Spotify"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="http://tomeraberbach.com/spotify-true-random"/>
+        <meta property="og:image" content="http://tomeraberbach.com/spotify-true-random/img/icon.png"/>
+        <meta property="og:description" content="An application for unbiased truly random playlist and library shuffling with Spotify."/>
+        <meta property="og:site_name" content="True Random For Spotify"/>
+
+        <link rel="stylesheet" href="css/style.css"/>
+        <script type="text/javascript" src="js/spotify-web-api.js"></script>
+    </head>
+    <body>
+        <main>
+            <h1>True Random For</h1>
+            <img src="img/spotify.png" alt="Spotify"/>
+            <p>An application for unbiased truly random playlist and library shuffling with Spotify.</p>
+
+            <button onclick="spotifyRandom.library(spotifyRandom.play);">Play Library</button>
+            <span>
+                <button onclick="spotifyRandom.tracks(document.getElementById('playlists-select').value, spotifyRandom.play);">Play</button>
+                <select id="playlists-select" title="playlists"></select>
+            </span>
+        </main>
+
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
+</html>
