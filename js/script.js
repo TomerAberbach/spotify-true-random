@@ -51,6 +51,7 @@ const spotifyRandom = (() => {
             localStorage.removeItem(stateKey);
             access = params['access_token'];
             expires = new Date().getTime() + params['expires_in'];
+            window.location.hash = '';
             return access;
         }
 
@@ -131,7 +132,6 @@ const spotifyRandom = (() => {
             const device = document.getElementById('devices-select').value;
 
             if (device !== '') {
-                console.log('blah');
                 shuffle(tracks);
                 spotify.setAccessToken(token());
                 spotify.play({
