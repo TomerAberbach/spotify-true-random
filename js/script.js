@@ -5,7 +5,8 @@ const spotifyRandom = (() => {
         'playlist-read-private',
         'playlist-read-collaborative',
         'user-modify-playback-state',
-        'user-library-read'
+        'user-library-read',
+        'user-read-playback-state'
     ];
     const stateKey = 'state';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -73,7 +74,7 @@ const spotifyRandom = (() => {
             const owner = playlist.split(':')[0];
             const id = playlist.split(':')[1];
 
-            const total = playlist.split(':')[2];;
+            const total = playlist.split(':')[2];
             let i = 0;
 
             const tracks = [];
@@ -122,25 +123,64 @@ const spotifyRandom = (() => {
                 })();
             });
         },
-        play : tracks => {
-            shuffle(tracks);
+        devices : cb => {
             spotify.setAccessToken(token());
-            spotify.play({ uris : tracks.slice(0, Math.min(385, tracks.length)) });
+            spotify.getMyDevices((err, data) => cb(data['devices'].filter(device => !device['is_restricted'])));
+        },
+        play : tracks => {
+            const device = document.getElementById('devices-select').value;
+
+            if (device !== '') {
+                console.log('blah');
+                shuffle(tracks);
+                spotify.setAccessToken(token());
+                spotify.play({
+                    uris : tracks.slice(0, Math.min(385, tracks.length)),
+                    device_id : device
+                });
+            }
+        },
+        refresh : () => {
+            if (spotifyRandom.token()) {
+                spotifyRandom.playlists(playlists => {
+                    const select = document.getElementById('playlists-select');
+
+                    for (let i = select.length - 1; i >= 0; i--) {
+                        select.remove(i);
+                    }
+
+                    playlists['items'].forEach(playlist => {
+                        const option = document.createElement('option');
+                        option.text = playlist['name'];
+                        option.value = playlist['owner']['id'] + ':' + playlist['id'] + ':' + playlist['tracks']['total'];
+                        select.add(option);
+                    });
+                });
+
+                spotifyRandom.devices(devices => {
+                    const select = document.getElementById('devices-select');
+
+                    for (let i = select.length - 1; i >= 0; i--) {
+                        select.remove(i);
+                    }
+
+                    if (devices.length === 0) {
+                        const option = document.createElement('option');
+                        option.text = 'Please Open Spotify';
+                        option.value = '';
+                        select.add(option);
+                    } else {
+                        devices.forEach(device => {
+                            const option = document.createElement('option');
+                            option.text = device['name'];
+                            option.value = device['id'];
+                            select.add(option);
+                        });
+                    }
+                });
+            }
         }
     };
 })();
 
-document.addEventListener('DOMContentLoaded', () => {
-    if (spotifyRandom.token()) {
-        spotifyRandom.playlists(playlists => {
-            const select = document.getElementById('playlists-select');
-
-            playlists['items'].forEach(playlist => {
-                const option = document.createElement('option');
-                option.text = playlist['name'];
-                option.value = playlist['owner']['id'] + ':' + playlist['id'] + ':' + playlist['tracks']['total'];
-                select.add(option);
-            });
-        });
-    }
-});
+document.addEventListener('DOMContentLoaded', () => spotifyRandom.refresh());

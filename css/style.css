@@ -16,7 +16,7 @@ body {
 
 main {
     text-align: center;
-    padding: 10px;
+    padding: 20px;
     margin: auto;
 }
 
@@ -33,7 +33,7 @@ img {
 p {
     font-size: 16pt;
     width: 80%;
-    margin: 20px auto;
+    margin: 20px auto 40px auto;
 }
 
 button {
@@ -42,7 +42,7 @@ button {
     background-color: white;
     padding: 8px;
     border: 1px solid black;
-    margin: 20px 0;
+    margin: 0 0 10px 0;
 }
 
 button:hover {
@@ -61,9 +61,15 @@ select {
     height: 100%;
     padding: 7px 35px 7px 7px;
     border: 1px solid black;
+    margin: 0 0 10px 0;
 }
 
-div {
+label {
+    font-size: 14pt;
+    margin: 0 5px 10px 0;
+}
+
+#name-div {
     display: inline-block;
 }
 

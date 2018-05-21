@@ -38,17 +38,26 @@
             <h1>True Random For</h1>
             <img src="img/spotify.png" alt="Spotify"/>
             <p>An application for unbiased truly random playlist and library shuffling with Spotify.</p>
-            <button onclick="spotifyRandom.library(spotifyRandom.play);">Play Library</button>
 
-            <span>
-                <button onclick="spotifyRandom.tracks(document.getElementById('playlists-select').value, spotifyRandom.play);">Play</button>
-                <select id="playlists-select" title="playlists"></select>
-            </span>
+            <div class="play-div">
+                <button onclick="spotifyRandom.library(spotifyRandom.play);">Play Library</button>
+                <span>
+                    <button onclick="spotifyRandom.tracks(document.getElementById('playlists-select').value, spotifyRandom.play);">Play</button>
+                    <select id="playlists-select" title="playlists"></select>
+                </span>
+            </div>
 
-            <p>Spotify must be open and active (recently playing).</p>
+            <div class="devices-div">
+                <label>Device:</label>
+                <select id="devices-select" title="devices"></select>
+            </div>
+
+            <div>
+                <button id="refresh-button" onclick="spotifyRandom.refresh();">Refresh</button>
+            </div>
 
             <a href="http://tomeraberbach.com">
-                <div>Tomer Aberbach</div>
+                <div class="name-div">Tomer Aberbach</div>
             </a>
         </main>
 
