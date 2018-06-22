@@ -1,6 +1,6 @@
 const spotifyRandom = (() => {
     const clientId = 'b61d28d1ed4c49e8ba5d2923ed367262';
-    const redirect = 'http://tomeraberbach.com/spotify-true-random';
+    const redirect = 'https://tomeraberba.ch/spotify-true-random';
     const scope = [
         'playlist-read-private',
         'playlist-read-collaborative',
