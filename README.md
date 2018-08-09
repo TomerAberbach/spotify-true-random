@@ -4,6 +4,10 @@
 
 See it in action [here](http://tomeraberbach.com/spotify-true-random).
 
+## Contributing
+
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/TomerADev/spotify-true-random/issues/new).
+
 ## Author
 
 **Tomer Aberbach**
@@ -16,4 +20,4 @@ See it in action [here](http://tomeraberbach.com/spotify-true-random).
 ## License
 
 Copyright © 2018 [Tomer Aberbach](https://github.com/TomerADev)
-Released under the [MIT license](https://github.com/TomerADev/piano/blob/master/LICENSE).
+Released under the [MIT license](https://github.com/TomerADev/spotify-true-random/blob/master/LICENSE).
