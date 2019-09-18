@@ -19,5 +19,5 @@ Pull requests and stars are always welcome. For bugs and feature requests, [plea
 
 ## License
 
-Copyright © 2018 [Tomer Aberbach](https://github.com/TomerAberbach)
+Copyright © 2019 [Tomer Aberbach](https://github.com/TomerAberbach)
 Released under the [MIT license](https://github.com/TomerAberbach/spotify-true-random/blob/master/LICENSE).
