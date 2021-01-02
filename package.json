@@ -9,7 +9,7 @@
   "scripts": {
     "start": "gulp",
     "clean": "gulp clean",
-    "deploy": "gulp && git add dist && git commit -f -m \"dist\" && git subtree split --prefix dist -b gh-pages && git push -f origin gh-pages:gh-pages && git branch -D gh-pages && git reset --hard HEAD~1 && gulp clean"
+    "deploy": "gulp && git add -f dist && git commit -m \"dist\" && git subtree split --prefix dist -b gh-pages && git push -f origin gh-pages:gh-pages && git branch -D gh-pages && git reset --hard HEAD~1 && gulp clean"
   },
   "devDependencies": {
     "autoprefixer": "10.1.0",
