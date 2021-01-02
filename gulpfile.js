@@ -1,14 +1,13 @@
-const path = require('path')
-const fs = require('fs')
-const del = require('del')
-
-const gulp = require('gulp')
-const htmlmin = require('gulp-htmlmin')
-const postcss = require('gulp-postcss')
-const autoprefixer = require('autoprefixer')
-const cssnano = require('cssnano')
-const imagemin = require('gulp-imagemin')
-const uglify = require('gulp-uglify-es').default
+import path from 'path'
+import fs from 'fs'
+import del from 'del'
+import gulp from 'gulp'
+import htmlmin from 'gulp-htmlmin'
+import postcss from 'gulp-postcss'
+import autoprefixer from 'autoprefixer'
+import cssnano from 'cssnano'
+import imagemin from 'gulp-imagemin'
+import uglify from 'gulp-uglify-es'
 
 const clean = () => del(['dist'])
 gulp.task('clean', clean)
@@ -33,7 +32,7 @@ const img = () =>
   gulp.src('src/**/*.{gif,jpg,jpeg,png,svg}')
     .pipe(imagemin([
       imagemin.gifsicle(),
-      imagemin.jpegtran(),
+      imagemin.mozjpeg(),
       imagemin.optipng(),
       imagemin.svgo({plugins: [{removeTitle: false}]})
     ]))
@@ -41,7 +40,7 @@ const img = () =>
   
 const js = () =>
   gulp.src('src/**/*.js')
-    .pipe(uglify())
+    .pipe(uglify.default())
     .pipe(gulp.dest('dist'))
 
 gulp.task('default', gulp.series(clean, gulp.parallel(html, css, img, js)))

@@ -1,19 +1,25 @@
 {
+  "type": "module",
   "name": "spotify-true-random",
-  "author": "Tomer Aberbach <tomeraberbach@gmail.com> (https://tomeraberba.ch)",
+  "author": {
+    "name": "Tomer Aberbach",
+    "email": "tomeraberbach@gmail.com",
+    "url": "https://tomeraberba.ch"
+  },
   "scripts": {
     "start": "gulp",
     "clean": "gulp clean",
     "deploy": "gulp && git add dist && git commit -m \"dist\" && git subtree split --prefix dist -b gh-pages && git push -f origin gh-pages:gh-pages && git branch -D gh-pages && git reset --hard HEAD~1 && gulp clean"
   },
   "devDependencies": {
-    "autoprefixer": "^9.0.2",
-    "cssnano": "^4.0.5",
-    "del": "^5.1.0",
-    "gulp": "^4.0.0",
-    "gulp-htmlmin": "^5.0.1",
-    "gulp-imagemin": "^6.1.0",
-    "gulp-postcss": "^8.0.0",
-    "gulp-uglify-es": "^1.0.4"
+    "autoprefixer": "10.1.0",
+    "cssnano": "4.1.10",
+    "del": "6.0.0",
+    "gulp": "4.0.2",
+    "gulp-htmlmin": "5.0.1",
+    "gulp-imagemin": "7.1.0",
+    "gulp-postcss": "9.0.0",
+    "gulp-uglify-es": "2.0.0",
+    "postcss": "8.2.2"
   }
 }
