@@ -12,4 +12,4 @@ For bugs and feature requests, [please create an issue](https://github.com/Tomer
 
 ## License
 
-[MIT](https://github.com/TomerAberbach/spotify-true-random/blob/master/license) © [Tomer Aberbach](https://github.com/TomerAberbach)
+[MIT](https://github.com/TomerAberbach/spotify-true-random/blob/main/license) © [Tomer Aberbach](https://github.com/TomerAberbach)
