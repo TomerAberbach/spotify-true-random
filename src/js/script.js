@@ -98,7 +98,7 @@ const spotifyRandom = (() => {
                 });
             })();
         },
-        library : cb => {
+        savedTracks : cb => {
             spotify.setAccessToken(token());
             spotify.getMySavedTracks({ limit : 50 }, (err, data) => {
                 const total = data['total'];
@@ -119,6 +119,68 @@ const spotifyRandom = (() => {
                             f();
                         } else {
                             cb(tracks);
+                        }
+                    });
+                })();
+            });
+        },
+        library : (el, cb) => {
+            let oldContent = el.textContent;
+            el.disabled = true;
+            spotify.setAccessToken(token());
+            spotify.getMySavedAlbums({ limit: 50 }, (err, data) => {
+                const total = data['total'];
+                let i = 50;
+                const albums = data['items'].map(obj => obj['album']['id']);
+                (function f1() {
+                    spotify.getMySavedAlbums({
+                        offset : i,
+                        limit : 50,
+                    }, (err, data) => {
+                        data['items'].map(obj => obj['album']['id']).forEach(obj => albums.push(obj));
+                        i += 50;
+                        el.textContent = "Retrieving albums " + Math.min(i, total) + "/" + total;
+
+                        if (i < total) {
+                            f1();
+                        } else {
+                            tracks = [];
+                            let albumIndex = 0;
+                            (function f2() {
+                                if (albumIndex < albums.length) {
+                                    el.textContent = "Retrieving tracks " + Math.min(albumIndex, albums.length) + "/" + albums.length;
+                                    let i = 0;
+                                    spotify.getAlbumTracks(albums[albumIndex], {
+                                        offset : i,
+                                        limit : 50,
+                                    }, (err, data) => {
+                                        const total = data['total'];
+                                        data['items'].map(obj => obj['uri']).forEach(obj => tracks.push(obj));
+                                        i += 50;
+
+                                        (function f3() {
+                                            spotify.setAccessToken(token());
+                                            spotify.getAlbumTracks(albums[albumIndex], {
+                                                offset : i,
+                                                limit : 50,
+                                            }, (err, data) => {
+                                                data['items'].map(obj => obj['uri']).forEach(obj => tracks.push(obj));
+                                                i += 50;
+                                                if (i < total) {
+                                                    f3();
+                                                } else {
+                                                    albumIndex++;
+                                                    f2();
+                                                }
+                                            });
+                                        })();
+                                    });
+                                } else {
+                                    el.disabled = false;
+                                    el.textContent = oldContent;
+                                    cb(tracks);
+                                }
+                            })();
                         }
                     });
                 })();
