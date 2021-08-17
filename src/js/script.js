@@ -157,7 +157,11 @@ const spotifyRandom = (() => {
                                         const total = data['total'];
                                         data['items'].map(obj => obj['uri']).forEach(obj => tracks.push(obj));
                                         i += 50;
-
+                                        if (i >= total) {
+                                            albumIndex++;
+                                            f2();
+                                            return;
+                                        }
                                         (function f3() {
                                             spotify.setAccessToken(token());
                                             spotify.getAlbumTracks(albums[albumIndex], {
