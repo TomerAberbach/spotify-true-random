@@ -40,7 +40,8 @@
             <p>An application for unbiased truly random playlist and library shuffling with Spotify.</p>
 
             <div class="play-div">
-                <button onclick="spotifyRandom.library(spotifyRandom.play);">Play Library</button>
+                <button onclick="spotifyRandom.savedTracks(spotifyRandom.play);">Play Liked Songs</button>
+                <button onclick="spotifyRandom.library(this, spotifyRandom.play);">Play Library Albums</button>
                 <span>
                     <button onclick="spotifyRandom.tracks(document.getElementById('playlists-select').value, spotifyRandom.play);">Play</button>
                     <select id="playlists-select" title="playlists"></select>
