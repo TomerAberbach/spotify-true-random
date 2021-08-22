@@ -72,7 +72,6 @@ const spotifyRandom = (() => {
             spotify.getUserPlaylists({ limit : 50 }, (err, data) => cb(data));
         },
         tracks : (playlist, cb) => {
-            const owner = playlist.split(':')[0];
             const id = playlist.split(':')[1];
 
             const total = playlist.split(':')[2];
@@ -82,7 +81,7 @@ const spotifyRandom = (() => {
 
             (function f() {
                 spotify.setAccessToken(token());
-                spotify.getPlaylistTracks(owner, id, {
+                spotify.getPlaylistTracks(id, {
                     offset : i,
                     limit : 100,
                     fields : 'items(track(uri))'
