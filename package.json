@@ -20,6 +20,6 @@
     "gulp-imagemin": "7.1.0",
     "gulp-postcss": "9.0.0",
     "gulp-uglify-es": "2.0.0",
-    "postcss": "8.2.2"
+    "postcss": "8.4.31"
   }
 }
