@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
 } from '@remix-run/react'
 import styles from './styles/index.css?url'
+import { getSiteUrl } from './services/url.ts'
 
 const App = () => (
   <html lang='en'>
@@ -27,18 +28,32 @@ const App = () => (
   </html>
 )
 
-export const meta: MetaFunction = () => [
-  { title: `True Random For Spotify` },
-  { name: `author`, content: `Tomer Aberbach` },
-  {
-    name: `description`,
-    content: `An application for unbiased truly random playlist and library shuffling with Spotify.`,
-  },
-  {
-    name: `keywords`,
-    content: [`spotify`, `true`, `random`, `shuffle`, `music`].join(`,`),
-  },
-]
+export const meta: MetaFunction = ({ location }) => {
+  const title = `True Random For Spotify`
+  const description = `An application for unbiased truly random playlist and library shuffling with Spotify.`
+  const url = getSiteUrl(location.pathname)
+
+  return [
+    { title },
+    { tagName: `link`, rel: `canonical`, href: url },
+    { name: `description`, content: description },
+    {
+      name: `keywords`,
+      content: [`spotify`, `true`, `random`, `shuffle`, `music`].join(`,`),
+    },
+    { name: `author`, content: `Tomer Aberbach` },
+
+    // https://ogp.me
+    { property: `og:title`, content: title },
+    { property: `og:description`, content: description },
+    { property: `og:url`, content: url },
+
+    // X
+    { name: `twitter:site`, content: `@TomerAberbach` },
+    { name: `twitter:title`, content: title },
+    { name: `twitter:description`, content: description },
+  ]
+}
 
 export const links: LinksFunction = () => [{ rel: `stylesheet`, href: styles }]
 

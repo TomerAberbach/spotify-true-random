@@ -12,6 +12,7 @@ import {
   takeAsync,
   toArray,
 } from 'lfi'
+import { SITE_URL } from './url.ts'
 
 export const authenticateWithSpotify = async (): Promise<boolean> =>
   (await spotify.authenticate()).authenticated
@@ -96,7 +97,7 @@ async function* paginate<Item>(
 
 const spotify = SpotifyApi.withImplicitGrant(
   `b61d28d1ed4c49e8ba5d2923ed367262`,
-  `http://localhost:3000`,
+  SITE_URL,
   [
     `playlist-read-private`,
     `playlist-read-collaborative`,
