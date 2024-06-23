@@ -2,7 +2,7 @@ app = 'spotify-true-random'
 primary_region = 'ewr'
 
 [env]
-SITE_URL = "https://spotify-true-random.fly.dev"
+SITE_URL = "https://spotify-true-random.tomeraberba.ch"
 
 [http_service]
 internal_port = 3000
