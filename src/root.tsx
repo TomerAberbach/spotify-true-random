@@ -6,8 +6,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react'
-import styles from './styles/index.css?url'
+import stylesUrl from './styles/index.css?url'
 import { getSiteUrl } from './services/url.ts'
+import iconPngUrl from './icon.png?url'
 
 const App = () => (
   <html lang='en'>
@@ -55,6 +56,9 @@ export const meta: MetaFunction = ({ location }) => {
   ]
 }
 
-export const links: LinksFunction = () => [{ rel: `stylesheet`, href: styles }]
+export const links: LinksFunction = () => [
+  { rel: `stylesheet`, href: stylesUrl },
+  { rel: `icon`, href: iconPngUrl, sizes: `any` },
+]
 
 export default App
