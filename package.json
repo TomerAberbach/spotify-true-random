@@ -1,25 +1,54 @@
 {
-  "type": "module",
   "name": "spotify-true-random",
+  "private": true,
   "author": {
     "name": "Tomer Aberbach",
     "email": "tomeraberbach@gmail.com",
     "url": "https://tomeraberba.ch"
   },
+  "sideEffects": false,
+  "type": "module",
   "scripts": {
-    "start": "gulp",
-    "clean": "gulp clean",
-    "deploy": "gulp && git add -f dist && git commit -m \"dist\" && git subtree split --prefix dist -b gh-pages && git push -f origin gh-pages:gh-pages && git branch -D gh-pages && git reset --hard HEAD~1 && gulp clean"
+    "build": "remix vite:build",
+    "clean": "tomer clean build public/build",
+    "dev": "remix vite:dev",
+    "format": "tomer format",
+    "lint": "tomer lint",
+    "prepare": "tomer install",
+    "start": "remix-serve ./build/server/index.js",
+    "typecheck": "tomer typecheck"
+  },
+  "dependencies": {
+    "@remix-run/node": "^2.9.2",
+    "@remix-run/react": "^2.9.2",
+    "@remix-run/serve": "^2.9.2",
+    "@spotify/web-api-ts-sdk": "^1.2.0",
+    "isbot": "^5.1.9",
+    "lfi": "^3.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "autoprefixer": "10.1.0",
-    "cssnano": "4.1.10",
-    "del": "6.0.0",
-    "gulp": "4.0.2",
-    "gulp-htmlmin": "5.0.1",
-    "gulp-imagemin": "7.1.0",
-    "gulp-postcss": "9.0.0",
-    "gulp-uglify-es": "2.0.0",
-    "postcss": "8.2.2"
+    "@remix-run/dev": "^2.9.2",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.13",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "cssnano": "^7.0.3",
+    "eslint": "^8.57.0",
+    "postcss-import": "^16.1.0",
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "rollup-plugin-visualizer": "^5.12.0",
+    "tailwindcss": "^3.4.4",
+    "tomer": "^3.2.4",
+    "typescript": "^5.5.2",
+    "vite": "^5.3.1",
+    "vite-plugin-svgr": "^4.2.0",
+    "vite-tsconfig-paths": "^4.3.2"
+  },
+  "engines": {
+    "node": ">= 18"
   }
 }

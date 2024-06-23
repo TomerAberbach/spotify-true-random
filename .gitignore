@@ -1,2 +1,8 @@
-/node_modules/
-/dist/
+node_modules
+
+/.cache
+/build
+/public/build
+.env
+
+*.tsbuildinfo
