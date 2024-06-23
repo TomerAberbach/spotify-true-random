@@ -1,5 +1,5 @@
 import { useLoaderData, useRevalidator } from '@remix-run/react'
-import { useCallback, useId, useState } from 'react'
+import { useCallback, useEffect, useId, useState } from 'react'
 import type {
   ChangeEventHandler,
   ComponentProps,
@@ -40,6 +40,11 @@ const IndexPage = () => {
   const canPlay = !isQueueing && Boolean(deviceId)
 
   const { revalidate } = useRevalidator()
+
+  // Clear Spotify tokens from the URL after load.
+  useEffect(() => {
+    history.replaceState(``, ``, location.pathname + location.search)
+  }, [])
 
   if (!loaderData) {
     return <HydrateFallback />
