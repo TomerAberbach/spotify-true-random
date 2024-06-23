@@ -1,4 +1,3 @@
-import type { MetaFunction } from '@remix-run/node'
 import { useLoaderData, useRevalidator } from '@remix-run/react'
 import { useCallback, useId, useState } from 'react'
 import type {
@@ -232,11 +231,6 @@ const DeviceSelect = ({
 const Button = (props: ComponentProps<`button`>) => (
   <button {...props} className='border border-black bg-white p-1.5 text-lg' />
 )
-
-export const meta: MetaFunction = () => [
-  { title: `New Remix App` },
-  { name: `description`, content: `Welcome to Remix!` },
-]
 
 export const clientLoader = async () => {
   if (!(await authenticateWithSpotify())) {
