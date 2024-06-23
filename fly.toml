@@ -1,7 +1,8 @@
 app = 'spotify-true-random'
 primary_region = 'ewr'
 
-[build]
+[env]
+SITE_URL = "https://spotify-true-random.fly.dev"
 
 [http_service]
 internal_port = 3000
