@@ -172,7 +172,7 @@ const PlaylistSelect = ({
         <select
           aria-labelledby={playButtonId}
           onChange={updatePlaylistId}
-          className='max-w-[75vw] border border-black bg-white p-1.5'
+          className='max-w-[60vw] border border-black bg-white p-1.5'
         >
           {playlists.map(([id, name]) => (
             <option key={id} value={id}>
