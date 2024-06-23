@@ -1,4 +1,4 @@
-import { SpotifyApi } from '@spotify/web-api-ts-sdk'
+import { InMemoryCachingStrategy, SpotifyApi } from '@spotify/web-api-ts-sdk'
 import type { Page } from '@spotify/web-api-ts-sdk'
 import {
   filter,
@@ -105,4 +105,5 @@ const spotify = SpotifyApi.withImplicitGrant(
     `user-library-read`,
     `user-read-playback-state`,
   ],
+  { cachingStrategy: new InMemoryCachingStrategy() },
 )

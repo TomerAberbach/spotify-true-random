@@ -20,16 +20,9 @@ import {
 } from '~/services/spotify.ts'
 import shuffle from '~/services/shuffle.ts'
 
-export const HydrateFallback = () => (
-  <Layout>
-    <div className='mb-1 flex min-h-36 flex-col items-center justify-center'>
-      <LoadingSpinner title='Loading' />
-    </div>
-  </Layout>
-)
-
 const IndexPage = () => {
-  const { devices = [] } = useLoaderData<typeof clientLoader>() ?? {}
+  const loaderData = useLoaderData<typeof clientLoader>()
+  const { devices = [] } = loaderData ?? {}
   const [deviceId, setDeviceId] = useState(devices[0]?.[0])
 
   const [isQueueing, setQueueing] = useState(false)
@@ -47,6 +40,10 @@ const IndexPage = () => {
   const canPlay = !isQueueing && Boolean(deviceId)
 
   const { revalidate } = useRevalidator()
+
+  if (!loaderData) {
+    return <HydrateFallback />
+  }
 
   return (
     <Layout>
@@ -66,6 +63,14 @@ const IndexPage = () => {
     </Layout>
   )
 }
+
+export const HydrateFallback = () => (
+  <Layout>
+    <div className='mb-1 flex min-h-36 flex-col items-center justify-center'>
+      <LoadingSpinner title='Loading' />
+    </div>
+  </Layout>
+)
 
 const Layout = ({ children }: { children: ReactNode }) => (
   <main className='flex flex-col items-center p-5 text-center sm:p-7'>
@@ -159,7 +164,7 @@ const PlaylistSelect = ({
   }, [play, playlistId])
 
   return (
-    <div className='flex gap-1 sm:text-lg'>
+    <div className='flex items-center gap-1 sm:text-lg'>
       <Button
         id={playButtonId}
         disabled={!canPlay || !playlistId}
