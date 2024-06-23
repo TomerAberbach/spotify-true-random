@@ -172,7 +172,7 @@ const PlaylistSelect = ({
         <select
           aria-labelledby={playButtonId}
           onChange={updatePlaylistId}
-          className='max-w-[75vw] border border-black p-1.5'
+          className='max-w-[75vw] border border-black bg-white p-1.5'
         >
           {playlists.map(([id, name]) => (
             <option key={id} value={id}>
@@ -211,7 +211,7 @@ const DeviceSelect = ({
           id={devicesSelectId}
           defaultValue={deviceId}
           onChange={updateDeviceId}
-          className='border border-black p-1.5'
+          className='border border-black bg-white p-1.5'
         >
           {devices.map(([id, name]) => (
             <option key={id} value={id}>
