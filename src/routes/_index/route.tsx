@@ -68,14 +68,14 @@ const IndexPage = () => {
 }
 
 const Layout = ({ children }: { children: ReactNode }) => (
-  <main className='flex flex-col items-center p-7 text-center'>
+  <main className='flex flex-col items-center p-5 text-center sm:p-7'>
     <Header />
 
     {children}
 
     <a
       href='https://tomeraberba.ch'
-      className='mt-10 text-lg font-medium underline'
+      className='mt-10 font-medium underline sm:text-lg'
     >
       Tomer Aberbach
     </a>
@@ -84,9 +84,9 @@ const Layout = ({ children }: { children: ReactNode }) => (
 
 const Header = () => (
   <div className='flex flex-col items-center'>
-    <h1 className='mb-5 text-3xl font-semibold'>True Random For</h1>
+    <h1 className='mb-5 text-2xl font-semibold sm:text-3xl'>True Random For</h1>
     <img src={spotifyPngUrl} alt='Spotify' className='my-5 w-[20vw] min-w-52' />
-    <p className='mx-auto mb-10 mt-5 max-w-[45ch] text-2xl font-medium'>
+    <p className='mx-auto mb-10 mt-5 max-w-[45ch] text-xl font-medium sm:text-2xl'>
       An application for unbiased truly random playlist and library shuffling
       with Spotify.
     </p>
@@ -159,7 +159,7 @@ const PlaylistSelect = ({
   }, [play, playlistId])
 
   return (
-    <div className='flex gap-1'>
+    <div className='flex gap-1 sm:text-lg'>
       <Button
         id={playButtonId}
         disabled={!canPlay || !playlistId}
@@ -167,14 +167,12 @@ const PlaylistSelect = ({
       >
         {isQueuing ? `Queueing...` : `Play`}
       </Button>
-      {playlists.length === 0 && (
-        <span className='text-lg'>No playlists found</span>
-      )}
+      {playlists.length === 0 && <span>No playlists found</span>}
       {playlists.length > 0 && (
         <select
           aria-labelledby={playButtonId}
           onChange={updatePlaylistId}
-          className='border border-black p-1.5 text-lg'
+          className='max-w-[75vw] border border-black p-1.5'
         >
           {playlists.map(([id, name]) => (
             <option key={id} value={id}>
@@ -203,13 +201,11 @@ const DeviceSelect = ({
   )
 
   return (
-    <div className='mt-3 flex items-center gap-2 text-lg'>
+    <div className='mt-3 flex items-center gap-2 sm:text-lg'>
       <label htmlFor={devicesSelectId} className='font-medium'>
         Device:
       </label>
-      {devices.length === 0 && (
-        <span className='text-lg'>No devices detected</span>
-      )}
+      {devices.length === 0 && <span>No devices detected</span>}
       {devices.length > 0 && (
         <select
           id={devicesSelectId}
@@ -229,7 +225,10 @@ const DeviceSelect = ({
 }
 
 const Button = (props: ComponentProps<`button`>) => (
-  <button {...props} className='border border-black bg-white p-1.5 text-lg' />
+  <button
+    {...props}
+    className='border border-black bg-white p-1.5 sm:text-lg'
+  />
 )
 
 export const clientLoader = async () => {
