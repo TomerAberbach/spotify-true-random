@@ -1,5 +1,5 @@
 import { InMemoryCachingStrategy, SpotifyApi } from '@spotify/web-api-ts-sdk'
-import type { Page } from '@spotify/web-api-ts-sdk'
+import type { Page, Track } from '@spotify/web-api-ts-sdk'
 import {
   filter,
   filterAsync,
@@ -62,10 +62,13 @@ export const fetchPlaylistTrackUris = async (
       spotify.playlists.getPlaylistItems(
         playlistId,
         undefined,
-        `items(track(uri))`,
+        `total,items(track(is_local,uri))`,
         50,
         offset,
       ),
+    ),
+    filterAsync(
+      ({ track }) => (track as Track | null) !== null && !track.is_local,
     ),
     mapAsync(({ track }) => track.uri),
     takeAsync(MAX_PLAYABLE_URIS),

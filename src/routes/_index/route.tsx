@@ -23,7 +23,8 @@ import shuffle from '~/services/shuffle.ts'
 const IndexPage = () => {
   const loaderData = useLoaderData<typeof clientLoader>()
   const { devices = [] } = loaderData ?? {}
-  const [deviceId, setDeviceId] = useState(devices[0]?.[0])
+  let [deviceId, setDeviceId] = useState(devices[0]?.[0])
+  deviceId ??= devices[0]?.[0]
 
   const [isQueueing, setQueueing] = useState(false)
   const play = useCallback<(trackUris: string[]) => Promise<void>>(
