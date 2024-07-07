@@ -1,4 +1,12 @@
-# True Random For Spotify
+<h1 align="center">
+  True Random For Spotify
+</h1>
+
+<div align="center">
+  <a href="https://github.com/sponsors/TomerAberbach">
+    <img src="https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86" alt="Sponsor">
+  </a>
+</div>
 
 > An application for unbiased truly random playlist and library shuffling with
 > Spotify.
