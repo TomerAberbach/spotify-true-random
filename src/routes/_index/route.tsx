@@ -26,7 +26,7 @@ const IndexPage = () => {
   let [deviceId, setDeviceId] = useState(devices[0]?.[0])
   deviceId ??= devices[0]?.[0]
 
-  const [isQueueing, setQueueing] = useState(false)
+  const [queueing, setQueueing] = useState(false)
   const play = useCallback<(trackUris: string[]) => Promise<void>>(
     async trackUris => {
       setQueueing(true)
@@ -38,7 +38,7 @@ const IndexPage = () => {
     },
     [deviceId],
   )
-  const canPlay = !isQueueing && Boolean(deviceId)
+  const canPlay = !queueing && Boolean(deviceId)
 
   const { revalidate } = useRevalidator()
 
@@ -111,16 +111,16 @@ const PlaySavedTracksButton = ({
   canPlay: boolean
   play: (trackUris: string[]) => Promise<void>
 }) => {
-  const [isQueuing, setQueuing] = useState(false)
+  const [queueing, setQueueing] = useState(false)
   const playSavedTracks = useCallback(async () => {
-    setQueuing(true)
+    setQueueing(true)
     await play(shuffle(await fetchSavedTrackUris()))
-    setQueuing(false)
+    setQueueing(false)
   }, [play])
 
   return (
     <Button disabled={!canPlay} onClick={playSavedTracks}>
-      {isQueuing ? `Queueing...` : `Play Liked Songs`}
+      {queueing ? `Queueing...` : `Play Liked Songs`}
     </Button>
   )
 }
@@ -132,16 +132,16 @@ const PlaySavedAlbums = ({
   canPlay: boolean
   play: (trackUris: string[]) => Promise<void>
 }) => {
-  const [isQueuing, setQueuing] = useState(false)
+  const [queueing, setQueueing] = useState(false)
   const playSavedAlbums = useCallback(async () => {
-    setQueuing(true)
+    setQueueing(true)
     await play(shuffle(await fetchSavedAlbumTrackUris()))
-    setQueuing(false)
+    setQueueing(false)
   }, [play])
 
   return (
     <Button disabled={!canPlay} onClick={playSavedAlbums}>
-      {isQueuing ? `Queueing...` : `Play Library Albums`}
+      {queueing ? `Queueing...` : `Play Library Albums`}
     </Button>
   )
 }
@@ -162,11 +162,11 @@ const PlaylistSelect = ({
     [setPlaylistId],
   )
 
-  const [isQueuing, setQueuing] = useState(false)
+  const [queueing, setQueueing] = useState(false)
   const playPlaylist = useCallback(async () => {
-    setQueuing(true)
+    setQueueing(true)
     await play(shuffle(await fetchPlaylistTrackUris(playlistId!)))
-    setQueuing(false)
+    setQueueing(false)
   }, [play, playlistId])
 
   return (
@@ -176,7 +176,7 @@ const PlaylistSelect = ({
         disabled={!canPlay || !playlistId}
         onClick={playPlaylist}
       >
-        {isQueuing ? `Queueing...` : `Play`}
+        {queueing ? `Queueing...` : `Play`}
       </Button>
       {playlists.length === 0 && <span>No playlists found</span>}
       {playlists.length > 0 && (
@@ -238,6 +238,7 @@ const DeviceSelect = ({
 const Button = (props: ComponentProps<`button`>) => (
   <button
     {...props}
+    type='button'
     className='border border-black bg-white p-1.5 sm:text-lg'
   />
 )

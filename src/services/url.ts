@@ -8,7 +8,7 @@ export const SITE_URL: string = removeTrailingSlash(
   new URL(
     `/`,
     typeof window === `undefined`
-      ? process.env.SITE_URL ?? `http://localhost:3000`
+      ? (process.env.SITE_URL ?? `http://localhost:3000`)
       : window.location.href,
   ).toString(),
 )
