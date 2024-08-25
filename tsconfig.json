@@ -2,7 +2,12 @@
   "extends": "tomer/tsconfig",
   "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "types": ["@remix-run/node", "vite/client", "vite-plugin-svgr/client"],
+    "types": [
+      "tomer",
+      "@remix-run/node",
+      "vite/client",
+      "vite-plugin-svgr/client"
+    ],
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
