@@ -9,7 +9,6 @@ import {
   pipe,
   reduce,
   reduceAsync,
-  takeAsync,
   toArray,
 } from 'lfi'
 import { SITE_URL } from './url.ts'
@@ -21,7 +20,15 @@ export const playTracks = async (
   deviceId: string,
   trackUris: string[],
 ): Promise<void> =>
-  spotify.player.startResumePlayback(deviceId, undefined, trackUris)
+  spotify.player.startResumePlayback(
+    deviceId,
+    undefined,
+    trackUris.slice(0, MAX_PLAYABLE_URIS),
+  )
+
+// Trying to play more URIs than this results in a "Payload Too Large" 413 error
+// from Spotify.
+const MAX_PLAYABLE_URIS = 382
 
 export const fetchDevices = async (): Promise<[string, string][]> =>
   pipe(
@@ -36,7 +43,6 @@ export const fetchSavedTrackUris = async (): Promise<string[]> =>
     paginate(offset => spotify.currentUser.tracks.savedTracks(50, offset)),
     filterAsync(({ track }) => !track.is_local),
     mapAsync(({ track }) => track.uri),
-    takeAsync(MAX_PLAYABLE_URIS),
     reduceAsync(toArray()),
   )
 
@@ -50,7 +56,6 @@ export const fetchSavedAlbumTrackUris = async (): Promise<string[]> =>
     ),
     filterAsync(track => !track.is_local),
     mapAsync(track => track.uri),
-    takeAsync(MAX_PLAYABLE_URIS),
     reduceAsync(toArray()),
   )
 
@@ -71,13 +76,8 @@ export const fetchPlaylistTrackUris = async (
       ({ track }) => (track as Track | null) !== null && !track.is_local,
     ),
     mapAsync(({ track }) => track.uri),
-    takeAsync(MAX_PLAYABLE_URIS),
     reduceAsync(toArray()),
   )
-
-// Trying to play more URIs than this results in a "Payload Too Large" 413 error
-// from Spotify.
-const MAX_PLAYABLE_URIS = 382
 
 export const fetchPlaylistIdsAndNames = async (): Promise<[string, string][]> =>
   pipe(
