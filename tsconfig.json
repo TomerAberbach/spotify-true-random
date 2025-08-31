@@ -26,9 +26,10 @@
     "lib": ["esnext", "dom", "dom.iterable"],
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["app/*"]
     },
-    "types": ["@remix-run/node", "vite/client", "vite-plugin-svgr/client"]
+    "types": ["@react-router/node", "vite/client", "vite-plugin-svgr/client"],
+    "rootDirs": [".", "./.react-router/types"]
   },
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": [".react-router/types/**/*", "**/*.ts", "**/*.tsx"]
 }

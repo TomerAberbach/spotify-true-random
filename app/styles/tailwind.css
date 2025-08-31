@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-*: initial;
+  --font-sans: Open Sans, sans-serif;
+}
+
+@layer base {
+  html,
+  body {
+    @apply h-full;
+  }
+
+  body {
+    @apply m-0 flex h-full w-full items-center justify-center;
+  }
+}
