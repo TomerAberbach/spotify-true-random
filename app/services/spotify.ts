@@ -34,7 +34,7 @@ export const fetchDevices = async (): Promise<[string, string][]> =>
   pipe(
     (await spotify.player.getAvailableDevices()).devices,
     filter(device => !device.is_restricted && Boolean(device.id)),
-    map((device): [string, string] => [device.id!, device.name]),
+    map(device => [device.id!, device.name]),
     reduce(toArray()),
   )
 
@@ -82,7 +82,7 @@ export const fetchPlaylistTrackUris = async (
 export const fetchPlaylistIdsAndNames = async (): Promise<[string, string][]> =>
   pipe(
     paginate(offset => spotify.currentUser.playlists.playlists(50, offset)),
-    mapAsync(({ id, name }): [string, string] => [id, name]),
+    mapAsync(({ id, name }) => [id, name]),
     reduceAsync(toArray()),
   )
 
