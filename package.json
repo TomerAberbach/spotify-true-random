@@ -6,20 +6,20 @@
     "email": "tomer@aberba.ch",
     "url": "https://tomeraberba.ch"
   },
-  "sideEffects": false,
   "type": "module",
+  "engines": {
+    "node": ">= 22"
+  },
   "scripts": {
-    "prepare": "tomer install",
-    "build": "remix vite:build",
-    "clean": "tomer clean build public/build",
+    "format": "prettier --cache --write .",
+    "lint": "eslint --cache --cache-location node_modules/.cache/eslint/ --fix .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
     "dev": "remix vite:dev",
-    "format": "tomer format",
-    "lint": "tomer lint",
-    "typecheck": "tomer typecheck",
-    "test": "tomer test",
+    "build": "remix vite:build",
     "start": "remix-serve ./build/server/index.js"
   },
-  "prettier": "tomer/prettier",
+  "prettier": "@tomer/prettier-config",
   "dependencies": {
     "@remix-run/node": "^2.11.2",
     "@remix-run/react": "^2.11.2",
@@ -35,25 +35,23 @@
     "@remix-run/dev": "^2.11.2",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.14",
+    "@tomer/eslint-config": "^4.1.1",
+    "@tomer/prettier-config": "^4.0.0",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
     "@vitest/coverage-v8": "^2.0.5",
     "autoprefixer": "^10.4.20",
     "cssnano": "^7.0.5",
-    "eslint": "^8.57.0",
+    "eslint": "^9.34.0",
+    "jest-extended": "^6.0.0",
     "postcss-import": "^16.1.0",
-    "prettier": "^3.3.3",
-    "prettier-plugin-tailwindcss": "^0.6.6",
+    "prettier": "^3.6.2",
     "rollup-plugin-visualizer": "^5.12.0",
     "tailwindcss": "^3.4.10",
-    "tomer": "^4.1.0",
     "typescript": "^5.5.4",
     "vite": "^5.4.2",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^5.0.1",
-    "vitest": "^2.0.5"
-  },
-  "engines": {
-    "node": ">= 18"
+    "vitest": "^3.2.4"
   }
 }
