@@ -1,20 +1,34 @@
 {
-  "extends": "tomer/tsconfig",
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
   "compilerOptions": {
-    "types": [
-      "tomer",
-      "@remix-run/node",
-      "vite/client",
-      "vite-plugin-svgr/client"
-    ],
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    // Base options
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "esnext",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "incremental": true,
+    "tsBuildInfoFile": "node_modules/.cache/tsconfig.tsbuildinfo",
+    // Strictness
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    // Using a bundler
     "allowImportingTsExtensions": true,
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "noEmit": true,
+    // Runtime
+    "jsx": "react-jsx",
+    "lib": ["esnext", "dom", "dom.iterable"],
     "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"]
-    }
-  }
+    },
+    "types": ["@remix-run/node", "vite/client", "vite-plugin-svgr/client"]
+  },
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"]
 }
