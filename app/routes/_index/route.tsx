@@ -239,7 +239,7 @@ const Button = (props: ComponentProps<`button`>) => (
   <button
     {...props}
     type='button'
-    className='border border-black bg-white p-1.5 sm:text-lg'
+    className='cursor-pointer border border-black bg-white p-1.5 sm:text-lg'
   />
 )
 
