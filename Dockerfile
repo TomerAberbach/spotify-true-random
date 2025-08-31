@@ -1,11 +1,9 @@
 # syntax = docker/dockerfile:1
 
-ARG NODE_VERSION=22.1.0
+ARG NODE_VERSION=24.5.0
 FROM node:${NODE_VERSION}-slim as base
 
-LABEL fly_launch_runtime="Remix"
-
-ARG PNPM_VERSION=9.1.1
+ARG PNPM_VERSION=10.14.0
 RUN npm install -g pnpm@$PNPM_VERSION
 
 WORKDIR /app
