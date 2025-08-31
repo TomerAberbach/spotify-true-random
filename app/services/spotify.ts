@@ -1,4 +1,4 @@
-import { InMemoryCachingStrategy, SpotifyApi } from '@spotify/web-api-ts-sdk'
+import { SpotifyApi } from '@spotify/web-api-ts-sdk'
 import type { Page, Track } from '@spotify/web-api-ts-sdk'
 import {
   filter,
@@ -98,7 +98,7 @@ async function* paginate<Item>(
   } while (offset < lastPage.total)
 }
 
-const spotify = SpotifyApi.withImplicitGrant(
+const spotify = SpotifyApi.withUserAuthorization(
   `b61d28d1ed4c49e8ba5d2923ed367262`,
   SITE_URL,
   [
@@ -108,5 +108,4 @@ const spotify = SpotifyApi.withImplicitGrant(
     `user-library-read`,
     `user-read-playback-state`,
   ],
-  { cachingStrategy: new InMemoryCachingStrategy() },
 )
