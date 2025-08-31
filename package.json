@@ -27,8 +27,8 @@
     "@spotify/web-api-ts-sdk": "^1.2.0",
     "isbot": "^5.1.30",
     "lfi": "^4.0.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "react-router": "^7.8.2"
   },
   "devDependencies": {
@@ -39,8 +39,8 @@
     "@tomer/eslint-config": "^4.1.1",
     "@tomer/prettier-config": "^4.0.0",
     "@types/node": "^24.3.0",
-    "@types/react": "^18.3.1",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
     "eslint": "^9.34.0",
     "jest-extended": "^6.0.0",
     "prettier": "^3.6.2",
