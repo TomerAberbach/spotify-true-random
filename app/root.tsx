@@ -1,12 +1,6 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/node'
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from '@remix-run/react'
-import stylesUrl from './styles/index.css?url'
+import type { LinksFunction, MetaFunction } from 'react-router'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
+import stylesUrl from './styles/tailwind.css?url'
 import { getSiteUrl } from './services/url.ts'
 import iconPngUrl from './icon.png?url'
 

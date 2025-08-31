@@ -1,4 +1,4 @@
-import { useLoaderData, useRevalidator } from '@remix-run/react'
+import { useLoaderData, useRevalidator } from 'react-router'
 import { useCallback, useEffect, useId, useState } from 'react'
 import type {
   ChangeEventHandler,
@@ -97,7 +97,7 @@ const Header = () => (
   <div className='flex flex-col items-center'>
     <h1 className='mb-5 text-2xl font-semibold sm:text-3xl'>True Random For</h1>
     <img src={spotifyPngUrl} alt='Spotify' className='my-5 w-[20vw] min-w-52' />
-    <p className='mx-auto mb-10 mt-5 max-w-[45ch] text-xl font-medium sm:text-2xl'>
+    <p className='mx-auto mt-5 mb-10 max-w-[45ch] text-xl font-medium sm:text-2xl'>
       An application for unbiased truly random playlist and library shuffling
       with Spotify.
     </p>
