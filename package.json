@@ -8,16 +8,20 @@
   },
   "type": "module",
   "engines": {
-    "node": ">= 22"
+    "node": ">= 24.10"
   },
   "scripts": {
-    "format": "prettier --cache --write .",
-    "lint": "eslint --cache --cache-location node_modules/.cache/eslint/ --fix .",
-    "typecheck": "react-router typegen && tsc --noEmit",
-    "test": "vitest",
     "dev": "react-router dev",
     "build": "react-router build",
-    "start": "react-router-serve ./build/server/index.js"
+    "start": "react-router-serve ./build/server/index.js",
+    "format:base": "prettier --cache --write",
+    "format": "pnpm format:base .",
+    "lint:base": "eslint --cache --cache-location node_modules/.cache/eslint/ --fix",
+    "lint": "pnpm lint:base .",
+    "typecheck": "react-router typegen && tsc --noEmit",
+    "knip": "knip",
+    "test": "vitest",
+    "check": "npm-run-all -c -l -s build -p typecheck \"lint --no-fix\" \"format --no-write --check\" knip \"test --run\""
   },
   "prettier": "@tomer/prettier-config",
   "dependencies": {
@@ -40,6 +44,8 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "eslint": "^10.14.0",
+    "knip": "^6.44.1",
+    "npm-run-all2": "^9.0.4",
     "prettier": "^3.9.10",
     "rollup-plugin-visualizer": "^7.1.1",
     "tailwindcss": "^4.3.3",

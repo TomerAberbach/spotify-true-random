@@ -1,0 +1,7 @@
+.env*
+.git
+.jj
+.claude
+node_modules
+build
+.react-router

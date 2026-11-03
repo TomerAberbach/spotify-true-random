@@ -1,42 +1,19 @@
-# syntax = docker/dockerfile:1
-
-ARG NODE_VERSION=24.5.0
-FROM node:${NODE_VERSION}-slim as base
-
-ARG PNPM_VERSION=10.14.0
-RUN npm install -g pnpm@$PNPM_VERSION
-
+FROM node:24-slim AS base
+RUN corepack enable && corepack prepare pnpm@12.9.0 --activate
 WORKDIR /app
 
-ENV NODE_ENV="production"
+FROM base AS build
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
+COPY . .
+RUN pnpm build && pnpm prune --prod
 
-# Throw-away build stage to reduce size of final image
-FROM base as build
-
-# Install packages needed to build node modules
-RUN apt-get update -qq && \
-  apt-get install --no-install-recommends -y build-essential node-gyp pkg-config python-is-python3
-
-# Install node modules
-COPY --link package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile --prod=false
-
-# Copy application code
-COPY --link . .
-
-# Build application
-RUN pnpm run build
-
-# Remove development dependencies
-RUN pnpm prune --prod --config.ignore-scripts=true
-
-
-# Final stage for app image
 FROM base
-
-# Copy built application
-COPY --from=build /app /app
-
-# Start the server by default, this can be overwritten at runtime
+ENV NODE_ENV=production
+COPY --from=build /app/package.json ./
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/build ./build
 EXPOSE 3000
-CMD [ "pnpm", "run", "start" ]
+# Calls the binary directly, because pnpm would first try to install the dev
+# dependencies the image leaves out
+CMD ["node_modules/.bin/react-router-serve", "./build/server/index.js"]
