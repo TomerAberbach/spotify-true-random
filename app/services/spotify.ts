@@ -11,20 +11,41 @@ import {
   reduceAsync,
   toArray,
 } from 'lfi'
+import { SpotifyResponseError } from './spotify-error.ts'
+import type { SpotifyFailure } from './spotify-error.ts'
 import { SITE_URL } from './url.ts'
 
 export const authenticateWithSpotify = async (): Promise<boolean> =>
   (await spotify.authenticate()).authenticated
 
+export const logOutOfSpotify = (): void => spotify.logOut()
+
 export const playTracks = async (
   deviceId: string,
   trackUris: string[],
-): Promise<void> =>
-  spotify.player.startResumePlayback(
-    deviceId,
-    undefined,
-    trackUris.slice(0, MAX_PLAYABLE_URIS),
-  )
+): Promise<void> => {
+  try {
+    await spotify.player.startResumePlayback(
+      deviceId,
+      undefined,
+      trackUris.slice(0, MAX_PLAYABLE_URIS),
+    )
+  } catch (error) {
+    if (error instanceof SpotifyResponseError) {
+      throw new SpotifyResponseError(error.message, {
+        status: error.status,
+        failure: PLAYBACK_STATUS_FAILURES[error.status],
+      })
+    }
+    throw error
+  }
+}
+
+// These statuses have these meanings only for the playback endpoint.
+const PLAYBACK_STATUS_FAILURES: Partial<Record<number, SpotifyFailure>> = {
+  403: `playback-refused`,
+  404: `device-unavailable`,
+}
 
 // Trying to play more URIs than this results in a "Payload Too Large" 413 error
 // from Spotify.
@@ -108,4 +129,16 @@ const spotify = SpotifyApi.withUserAuthorization(
     `user-library-read`,
     `user-read-playback-state`,
   ],
+  {
+    responseValidator: {
+      validateResponse: async response => {
+        if (!response.ok) {
+          throw new SpotifyResponseError(
+            `Spotify responded with ${response.status}: ${await response.text()}`,
+            { status: response.status },
+          )
+        }
+      },
+    },
+  },
 )

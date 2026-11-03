@@ -25,6 +25,10 @@ pnpm check
 pnpm test --run app/services/shuffle.test.ts
 ```
 
+Vitest runs `*.browser.test.{ts,tsx}` files in Chromium and all other test files
+in Node. Run `pnpm exec playwright install chromium` once before running browser
+tests.
+
 ## Deployment
 
 - Pushing to `main` deploys to Fly.io through `.github/workflows/deploy.yml`

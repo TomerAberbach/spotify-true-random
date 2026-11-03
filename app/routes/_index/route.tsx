@@ -1,15 +1,11 @@
 import { useCallback, useEffect, useId, useState } from 'react'
-import type {
-  ChangeEventHandler,
-  ComponentProps,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-} from 'react'
+import type { ChangeEventHandler, ComponentProps, ReactNode } from 'react'
 import { useLoaderData, useRevalidator } from 'react-router'
 import LoadingSpinner from './loading.svg?react'
 import spotifyPngUrl from './spotify.png?url'
 import shuffle from '~/services/shuffle.ts'
+import { SpotifyResponseError } from '~/services/spotify-error.ts'
+import type { SpotifyFailure } from '~/services/spotify-error.ts'
 import {
   authenticateWithSpotify,
   fetchDevices,
@@ -17,30 +13,47 @@ import {
   fetchPlaylistTrackUris,
   fetchSavedAlbumTrackUris,
   fetchSavedTrackUris,
+  logOutOfSpotify,
   playTracks,
 } from '~/services/spotify.ts'
 
 const IndexPage = () => {
   const loaderData = useLoaderData<typeof clientLoader>()
-  const { devices = [] } = loaderData ?? {}
-  let [deviceId, setDeviceId] = useState(devices[0]?.[0])
-  deviceId ??= devices[0]?.[0]
+  const { devices = [], loadFailure } = loaderData ?? {}
+  const [deviceId, setDeviceId] = useSelectedId(devices)
+
+  const [failure, setFailure] = useState<Failure>()
+  const clearFailure = useCallback(() => setFailure(undefined), [])
 
   const [queueing, setQueueing] = useState(false)
-  const play = useCallback<(trackUris: string[]) => Promise<void>>(
-    async trackUris => {
+  const play = useCallback<Play>(
+    async fetchTrackUris => {
       setQueueing(true)
+      clearFailure()
       try {
-        await playTracks(deviceId!, trackUris)
+        const trackUris = await fetchTrackUris()
+        if (trackUris.length === 0) {
+          setFailure(`no-tracks`)
+          return
+        }
+
+        await playTracks(deviceId!, shuffle(trackUris))
+      } catch (error) {
+        console.error(error)
+        setFailure(getRequestFailure(error))
       } finally {
         setQueueing(false)
       }
     },
-    [deviceId],
+    [deviceId, clearFailure],
   )
   const canPlay = !queueing && Boolean(deviceId)
 
   const { revalidate } = useRevalidator()
+  const refresh = useCallback(async () => {
+    clearFailure()
+    await revalidate()
+  }, [clearFailure, revalidate])
 
   // Clear Spotify tokens from the URL after load.
   useEffect(() => {
@@ -51,6 +64,17 @@ const IndexPage = () => {
     return <HydrateFallback />
   }
 
+  if (loadFailure) {
+    return (
+      <Layout>
+        <FailureMessage failure={loadFailure} />
+        <div className='mt-3'>
+          <Button onClick={refresh}>Try Again</Button>
+        </div>
+      </Layout>
+    )
+  }
+
   return (
     <Layout>
       <div className='flex flex-wrap justify-center gap-x-4 gap-y-3'>
@@ -58,16 +82,79 @@ const IndexPage = () => {
           <PlaySavedTracksButton canPlay={canPlay} play={play} />
           <PlaySavedAlbums canPlay={canPlay} play={play} />
         </div>
-        <PlaylistSelect canPlay={canPlay} play={play} />
+        <PlaylistSelect
+          canPlay={canPlay}
+          disabled={queueing}
+          play={play}
+          onSelect={clearFailure}
+        />
       </div>
 
-      <DeviceSelect deviceId={deviceId} setDeviceId={setDeviceId} />
+      <DeviceSelect
+        deviceId={deviceId}
+        disabled={queueing}
+        setDeviceId={setDeviceId}
+        onSelect={clearFailure}
+      />
+
+      {failure && <FailureMessage failure={failure} />}
 
       <div className='mt-3'>
-        <Button onClick={revalidate}>Refresh</Button>
+        <Button onClick={refresh}>Refresh</Button>
       </div>
     </Layout>
   )
+}
+
+type Failure = SpotifyFailure | `no-tracks`
+
+const FAILURE_MESSAGES: Record<Failure, string> = {
+  'no-tracks': `There are no playable tracks to play.`,
+  'device-unavailable': `That device is no longer available. Refresh and choose another device.`,
+  'playback-refused': `Spotify refused to start playback. Check that your account has Spotify Premium, which playback requires.`,
+  'login-expired': `Your Spotify login is no longer valid.`,
+  'rate-limited': `Spotify is limiting requests. Wait a while before trying again.`,
+  unexpected: `Something went wrong while talking to Spotify. Try again.`,
+}
+
+const getRequestFailure = (error: unknown): SpotifyFailure =>
+  error instanceof SpotifyResponseError ? error.failure : `unexpected`
+
+const FailureMessage = ({ failure }: { failure: Failure }) => {
+  const { revalidate } = useRevalidator()
+  const logIn = useCallback(async () => {
+    logOutOfSpotify()
+    await revalidate()
+  }, [revalidate])
+
+  return (
+    <>
+      <p role='alert' className='mt-3 font-medium text-red-700 sm:text-lg'>
+        {FAILURE_MESSAGES[failure]}
+      </p>
+      {failure === `login-expired` && (
+        <div className='mt-3'>
+          <Button onClick={logIn}>Log In Again</Button>
+        </div>
+      )}
+    </>
+  )
+}
+
+type Play = (fetchTrackUris: () => Promise<string[]>) => Promise<void>
+
+const useSelectedId = (idsAndNames: [string, string][]) => {
+  const [selectedId, setSelectedId] = useState(idsAndNames[0]?.[0])
+
+  // Storing the fallback means a removed option that returns isn't reselected.
+  const resolvedId = idsAndNames.some(([id]) => id === selectedId)
+    ? selectedId
+    : idsAndNames[0]?.[0]
+  if (resolvedId !== selectedId) {
+    setSelectedId(resolvedId)
+  }
+
+  return [resolvedId, setSelectedId] as const
 }
 
 export const HydrateFallback = () => (
@@ -109,12 +196,12 @@ const PlaySavedTracksButton = ({
   play,
 }: {
   canPlay: boolean
-  play: (trackUris: string[]) => Promise<void>
+  play: Play
 }) => {
   const [queueing, setQueueing] = useState(false)
   const playSavedTracks = useCallback(async () => {
     setQueueing(true)
-    await play(shuffle(await fetchSavedTrackUris()))
+    await play(fetchSavedTrackUris)
     setQueueing(false)
   }, [play])
 
@@ -130,12 +217,12 @@ const PlaySavedAlbums = ({
   play,
 }: {
   canPlay: boolean
-  play: (trackUris: string[]) => Promise<void>
+  play: Play
 }) => {
   const [queueing, setQueueing] = useState(false)
   const playSavedAlbums = useCallback(async () => {
     setQueueing(true)
-    await play(shuffle(await fetchSavedAlbumTrackUris()))
+    await play(fetchSavedAlbumTrackUris)
     setQueueing(false)
   }, [play])
 
@@ -148,24 +235,31 @@ const PlaySavedAlbums = ({
 
 const PlaylistSelect = ({
   canPlay,
+  disabled,
   play,
+  onSelect,
 }: {
   canPlay: boolean
-  play: (trackUris: string[]) => Promise<void>
+  disabled: boolean
+  play: Play
+  onSelect: () => void
 }) => {
   const { playlists = [] } = useLoaderData<typeof clientLoader>() ?? {}
 
   const playButtonId = useId()
-  const [playlistId, setPlaylistId] = useState(playlists[0]?.[0])
+  const [playlistId, setPlaylistId] = useSelectedId(playlists)
   const updatePlaylistId = useCallback<ChangeEventHandler<HTMLSelectElement>>(
-    e => setPlaylistId(e.target.value),
-    [setPlaylistId],
+    e => {
+      setPlaylistId(e.target.value)
+      onSelect()
+    },
+    [setPlaylistId, onSelect],
   )
 
   const [queueing, setQueueing] = useState(false)
   const playPlaylist = useCallback(async () => {
     setQueueing(true)
-    await play(shuffle(await fetchPlaylistTrackUris(playlistId!)))
+    await play(() => fetchPlaylistTrackUris(playlistId!))
     setQueueing(false)
   }, [play, playlistId])
 
@@ -182,8 +276,10 @@ const PlaylistSelect = ({
       {playlists.length > 0 && (
         <select
           aria-labelledby={playButtonId}
+          value={playlistId}
+          disabled={disabled}
           onChange={updatePlaylistId}
-          className='max-w-[60vw] border border-black bg-white p-1.5'
+          className='max-w-[60vw] border border-black bg-white p-1.5 disabled:cursor-not-allowed disabled:opacity-70'
         >
           {playlists.map(([id, name]) => (
             <option key={id} value={id}>
@@ -198,17 +294,24 @@ const PlaylistSelect = ({
 
 const DeviceSelect = ({
   deviceId,
+  disabled,
   setDeviceId,
+  onSelect,
 }: {
   deviceId: string | undefined
-  setDeviceId: Dispatch<SetStateAction<string | undefined>>
+  disabled: boolean
+  setDeviceId: (id: string) => void
+  onSelect: () => void
 }) => {
   const { devices = [] } = useLoaderData<typeof clientLoader>() ?? {}
 
   const devicesSelectId = useId()
   const updateDeviceId = useCallback<ChangeEventHandler<HTMLSelectElement>>(
-    e => setDeviceId(e.target.value),
-    [setDeviceId],
+    e => {
+      setDeviceId(e.target.value)
+      onSelect()
+    },
+    [setDeviceId, onSelect],
   )
 
   return (
@@ -220,9 +323,10 @@ const DeviceSelect = ({
       {devices.length > 0 && (
         <select
           id={devicesSelectId}
-          defaultValue={deviceId}
+          value={deviceId}
+          disabled={disabled}
           onChange={updateDeviceId}
-          className='border border-black bg-white p-1.5'
+          className='border border-black bg-white p-1.5 disabled:cursor-not-allowed disabled:opacity-70'
         >
           {devices.map(([id, name]) => (
             <option key={id} value={id}>
@@ -239,20 +343,25 @@ const Button = (props: ComponentProps<`button`>) => (
   <button
     {...props}
     type='button'
-    className='cursor-pointer border border-black bg-white p-1.5 sm:text-lg'
+    className='cursor-pointer border border-black bg-white p-1.5 disabled:cursor-not-allowed disabled:opacity-70 sm:text-lg'
   />
 )
 
 export const clientLoader = async () => {
-  if (!(await authenticateWithSpotify())) {
-    return null
-  }
+  try {
+    if (!(await authenticateWithSpotify())) {
+      return null
+    }
 
-  const [playlists, devices] = await Promise.all([
-    fetchPlaylistIdsAndNames(),
-    fetchDevices(),
-  ])
-  return { playlists, devices }
+    const [playlists, devices] = await Promise.all([
+      fetchPlaylistIdsAndNames(),
+      fetchDevices(),
+    ])
+    return { playlists, devices }
+  } catch (error) {
+    console.error(error)
+    return { loadFailure: getRequestFailure(error) }
+  }
 }
 
 export default IndexPage

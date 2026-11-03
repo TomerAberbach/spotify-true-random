@@ -37,5 +37,8 @@ jobs:
           cache: true
           run_install: true
 
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps --only-shell chromium
+
       - name: Check
         run: pnpm check
