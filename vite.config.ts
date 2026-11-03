@@ -1,9 +1,8 @@
 import { reactRouter } from '@react-router/dev/vite'
-import { defineConfig } from 'vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
-import { visualizer } from 'rollup-plugin-visualizer'
-import svgr from 'vite-plugin-svgr'
 import tailwindcss from '@tailwindcss/vite'
+import { visualizer } from 'rollup-plugin-visualizer'
+import { defineConfig } from 'vite'
+import svgr from 'vite-plugin-svgr'
 
 export default defineConfig({
   server: { port: 3000 },
@@ -11,7 +10,9 @@ export default defineConfig({
     svgr(),
     tailwindcss(),
     reactRouter(),
-    tsconfigPaths(),
     visualizer({ emitFile: true }),
   ],
+  resolve: {
+    tsconfigPaths: true,
+  },
 })

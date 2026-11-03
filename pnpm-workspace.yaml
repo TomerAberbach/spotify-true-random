@@ -1,5 +1,7 @@
+allowBuilds:
+  '@tailwindcss/oxide': true
+  esbuild: true
+  unrs-resolver: true
 shellEmulator: true
-onlyBuiltDependencies:
-  - '@tailwindcss/oxide'
-  - esbuild
-  - unrs-resolver
+overrides:
+  katex@<0.18.2: ^0.18.2

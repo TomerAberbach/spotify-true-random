@@ -1,8 +1,8 @@
 import type { LinksFunction, MetaFunction } from 'react-router'
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
-import stylesUrl from './styles/tailwind.css?url'
-import { getSiteUrl } from './services/url.ts'
 import iconPngUrl from './icon.png?url'
+import { getSiteUrl } from './services/url.ts'
+import stylesUrl from './styles/tailwind.css?url'
 
 const App = () => (
   <html lang='en'>

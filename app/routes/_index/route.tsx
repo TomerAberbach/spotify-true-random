@@ -1,4 +1,3 @@
-import { useLoaderData, useRevalidator } from 'react-router'
 import { useCallback, useEffect, useId, useState } from 'react'
 import type {
   ChangeEventHandler,
@@ -7,8 +6,10 @@ import type {
   ReactNode,
   SetStateAction,
 } from 'react'
-import spotifyPngUrl from './spotify.png?url'
+import { useLoaderData, useRevalidator } from 'react-router'
 import LoadingSpinner from './loading.svg?react'
+import spotifyPngUrl from './spotify.png?url'
+import shuffle from '~/services/shuffle.ts'
 import {
   authenticateWithSpotify,
   fetchDevices,
@@ -18,7 +19,6 @@ import {
   fetchSavedTrackUris,
   playTracks,
 } from '~/services/spotify.ts'
-import shuffle from '~/services/shuffle.ts'
 
 const IndexPage = () => {
   const loaderData = useLoaderData<typeof clientLoader>()

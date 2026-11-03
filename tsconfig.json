@@ -22,14 +22,15 @@
     "moduleResolution": "bundler",
     "noEmit": true,
     // Runtime
-    "jsx": "react-jsx",
     "lib": ["esnext", "dom", "dom.iterable"],
-    "baseUrl": ".",
+    "types": ["node", "vite/client", "vite-plugin-svgr/client"],
+    "jsx": "react-jsx",
+    // React Router
+    "rootDirs": [".", "./.react-router/types"],
     "paths": {
-      "~/*": ["app/*"]
-    },
-    "types": ["@react-router/node", "vite/client", "vite-plugin-svgr/client"],
-    "rootDirs": [".", "./.react-router/types"]
+      "~/*": ["./app/*"]
+    }
   },
-  "include": [".react-router/types/**/*", "**/*.ts", "**/*.tsx"]
+  "include": ["**/*", ".react-router/types/**/*"],
+  "exclude": ["node_modules", "build"]
 }

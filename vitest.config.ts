@@ -1,11 +1,5 @@
 import { defineConfig } from 'vitest/config'
 
-export default defineConfig({
-  test: {
-    environment: `jsdom`,
-    setupFiles: [`vitest.setup.ts`],
-    coverage: {
-      include: [`src`],
-    },
-  },
-})
+// Without this file, Vitest loads `vite.config.ts`, whose React Router plugin
+// rejects test runs
+export default defineConfig({})

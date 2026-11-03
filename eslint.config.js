@@ -1,14 +1,17 @@
-import config from '@tomer/eslint-config'
+import tomer from '@tomer/eslint-config'
 
 export default [
-  ...config,
+  ...tomer,
   {
     rules: {
-      'typescript/no-throw-literal': `off`,
-      'typescript/explicit-module-boundary-types': `off`,
-      'typescript/no-misused-promises': `off`,
-      'unicorn/filename-case': `off`,
+      '@typescript-eslint/no-misused-promises': `off`,
     },
   },
-  { ignores: [`remix.env.d.ts`] },
+  {
+    // React Router reads the route config at build time
+    files: [`app/routes.ts`],
+    rules: {
+      'import/no-extraneous-dependencies': [`error`, { devDependencies: true }],
+    },
+  },
 ]
