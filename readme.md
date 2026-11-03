@@ -12,7 +12,7 @@
   An application for unbiased truly random playlist and library shuffling with Spotify.
 </div>
 
-[See it in action!](https://spotify-true-random.tomeraberba.ch).
+[See it in action!](https://spotify-true-random.tomeraberba.ch)
 
 ## Contributing
 
